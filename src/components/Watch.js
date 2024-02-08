@@ -16,12 +16,12 @@ const Watch = () => {
     // console.log(YOUTUBE_VIDEO_BY_ID)// cant update it as this has only getter error comes
 
     
-    useEffect(()=>{
+    
         
         dispatch(ToggleFalse());
        // getVideo();
 
-    }, []);
+    
 
     //? By this api i am not getting any clue how to show vidio on webpage using recieved data & not getting anything to put into video tag of HTML
     // const getVideo = async ()=>{
