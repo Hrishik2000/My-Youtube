@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import {ToggleFalse} from "./utils/appSlice"
 //import { YOUTUBE_VIDEO_BY_ID } from '../constants';
 import { useSearchParams } from 'react-router-dom';
+import CommentContainer from './CommentsContainer';
 
 const Watch = () => {
    
@@ -38,12 +39,13 @@ const Watch = () => {
     
     
   return (
-    <div className='mx-32 p-5'>
-     <iframe width="950" height="500" 
+    <div className='m-2'>
+     <iframe width="850" height="400" 
      src={"https://www.youtube.com/embed/"+id} 
      title="YouTube video player" 
      frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen>
      </iframe>
+     <CommentContainer/>
     </div>
   )
 }

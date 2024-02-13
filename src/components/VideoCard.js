@@ -88,4 +88,18 @@ const VideoCard = ({info}) => {
   )
 }
 
+//higher order component
+// a component which takes another compoent as argument or returns a modified version of another component
+
+export const AddCard=({info})=>{
+    return(
+        <>
+            <div className='border border-red-700'>
+                <VideoCard info ={info}/>
+            </div>
+
+        </>
+    )
+}
+
 export default VideoCard;
