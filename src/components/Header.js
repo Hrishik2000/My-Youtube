@@ -66,15 +66,22 @@ const Header = () => {
 
   //getSuggestion Debounsing used for 200ms;
   const getSuggestion = async () => {
-    const data = await fetch(YOUTUBE_AUTO_SUGGESTIONS_API + searchQuery);
-    const json = await data.json();
-    //console.log(json[1]);
-    setSuggestions(json[1]);
+    try{
+      const data = await fetch(YOUTUBE_AUTO_SUGGESTIONS_API + searchQuery);
+      const json = await data.json();
+       //console.log(json[1]);
+      setSuggestions(json[1]);
 
-    //& also add suggestions into the cache for further use & reduce api calls
-    distatch(cacheResults({
+      //& also add suggestions into the cache for further use & reduce api calls
+      distatch(cacheResults({
       [searchQuery] : json[1],
     }))
+
+    } catch(e){
+
+      console.log(e);
+    }
+    
   };
 
   // Attach scroll event listener to document to hide suggestions on scroll
