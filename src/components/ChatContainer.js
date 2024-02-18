@@ -21,7 +21,7 @@ const ChatContainer = () => {
             clearInterval(i);
         }
 
-    },[])
+    },[]);
 
    
 

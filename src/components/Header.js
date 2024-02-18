@@ -1,42 +1,41 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setToggleMenue } from "./utils/appSlice";
-import { YOUTUBE_AUTO_SUGGESTIONS_API, YOUTUBE_VIDEO_BY_QUERY } from "../constants";
-import {cacheResults} from "./utils/searchSlice";
-
+import {
+  YOUTUBE_AUTO_SUGGESTIONS_API,
+  YOUTUBE_VIDEO_BY_QUERY,
+} from "../constants";
+import { cacheResults } from "./utils/searchSlice";
 
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
-
+  const [selectedQuery, setSelectedQuery] = useState("");
   //console.log(searchQuery);
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
 
   const distatch = useDispatch();
-  
 
   const ToggleMenueHandeler = () => {
     distatch(setToggleMenue());
   };
 
   //subscribe to the search
-  const searchCache = useSelector(store => store.search)
+  const searchCache = useSelector((store) => store.search);
 
   //calling getSuggestion function
   useEffect(() => {
     //timer setup for 200ms
 
-    
     const timer = setTimeout(() => {
       //checking the cache for search query
-      if(searchCache[searchQuery]){
+      if (searchCache[searchQuery]) {
         //directly setSuggestions form cache
         setSuggestions(searchCache[searchQuery]);
-      }else{
+      } else {
         //make api call to get suggestions
         getSuggestion();
       }
-     
     }, 200);
 
     // this return will only call in component unmounting phase
@@ -68,26 +67,38 @@ const Header = () => {
 
   //getSuggestion Debounsing used for 200ms;
   const getSuggestion = async () => {
-    try{
-      const data = await fetch(YOUTUBE_AUTO_SUGGESTIONS_API + searchQuery);
+    try {
+      const data = await fetch(YOUTUBE_AUTO_SUGGESTIONS_API + selectedQuery);
       const json = await data.json();
-       //console.log(json[1]);
+      //console.log(json[1]);
       setSuggestions(json[1]);
 
       //& also add suggestions into the cache for further use & reduce api calls
-      distatch(cacheResults({
-      [searchQuery] : json[1],
-    }))
-
-    } catch(e){
-
+      distatch(
+        cacheResults({
+          [searchQuery]: json[1],
+        })
+      );
+    } catch (e) {
       console.log(e);
     }
-    
   };
 
+  const searchByQuery = async () => {
+    const APIwithQuery = YOUTUBE_VIDEO_BY_QUERY.replace("{}", searchQuery);
+    try {
+      const data = await fetch(APIwithQuery);
+      const json = await data.json();
+      console.log(json);
+      
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
-  
+  useEffect(()=>{
+    searchByQuery()
+  },[selectedQuery])
 
   // Attach scroll event listener to document to hide suggestions on scroll
   useEffect(() => {
@@ -119,11 +130,14 @@ const Header = () => {
           ></img>
         </a>
       </div>
-      <form className="col-span-10 text-center" onSubmit={
-        (e)=>{
-            e.preventDefault()
-        }}>
-        
+      <form
+        className="col-span-10 text-center"
+        onSubmit={(e) => {
+          e.preventDefault();
+          setSelectedQuery(searchQuery);
+        }}
+      >
+        {/* {console.log(SelectedQuery)} */}
         <input
           className="w-1/2 border border-gray-500 p-2 rounded-l-full "
           type="text"
@@ -133,7 +147,12 @@ const Header = () => {
           onBlur={() => setShowSuggestions(false)}
           onScroll={() => setShowSuggestions(false)}
         ></input>
-        <button className="border border-gray-500 p-2 rounded-r-full">
+        <button
+          className="border border-gray-500 p-2 rounded-r-full"
+          onClick={() => {
+            setSelectedQuery(searchQuery);
+          }}
+        >
           search
         </button>
       </form>
@@ -142,10 +161,7 @@ const Header = () => {
         <div className="fixed top-16 left-1/3 w-[35.5rem] bg-white rounded-xl shadow-lg">
           <ul>
             {suggestions.map((s) => (
-              <li
-                key={s}
-                className="p-2 hover:bg-gray-100 flex items-center"
-              >
+              <li key={s} className="p-2 hover:bg-gray-100 flex items-center">
                 <img
                   className="h-4 w-6 mr-2"
                   alt="searchlogo"

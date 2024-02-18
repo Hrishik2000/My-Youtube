@@ -29,6 +29,19 @@ const Watch = () => {
   //     console.log(json);
   // }
 
+  const sendLiveMessage = (e)=>{
+      e.preventDefault();
+      dispatch(
+        // adding message from input into the chatSlice
+        setMessages({
+          name: "Hrishik",
+
+          message: liveMessage,
+        })
+      );
+      setLiveMessage("");
+  }
+
   return (
     <div className="m-2">
       <div className="flex ">
@@ -48,44 +61,22 @@ const Watch = () => {
           </div>
           <form
             className="text-center"
-            onSubmit={(e) => {
-              e.preventDefault(); //obstruct default behaviour of form when press enter
-              //console.log("submitted " + liveMessage);
-              dispatch(
-                // adding message from input into the chatSlice
-                setMessages({
-                  name: "Hrishik",
-                  message: liveMessage,
-                })
-              );
-
-              //setLiveMessage("");
-              
-              
-            }}
+            onSubmit={sendLiveMessage}
           >
             <input
               type="text"
               className="Border w-[300px] border-black p-2  bg-slate-300 mx-2 rounded-md"
+              value={liveMessage}
+
               onChange={(e) => {
                 setLiveMessage(e.target.value);
               }}
+
+              
               placeholder="write message here"
             ></input>
             {/* {console.log(message)} */}
-            <button type="button" className=" bg-green-400 p-2 rounded-md"
-            onClick={()=>{
-              dispatch(
-                // adding message from input into the chatSlice
-                setMessages({
-                  name: "Hrishik",
-                  message: liveMessage,
-                })
-              );
-
-             
-            
-            }}>
+            <button type="submit" className=" bg-green-400 p-2 rounded-md">
               send
             </button>
           </form>
