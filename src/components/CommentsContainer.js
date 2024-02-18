@@ -104,10 +104,12 @@ const CommentTemplet = ({data}) => {
 };
 
 const CommentList=({comments,index})=>{
-
+//console.log(comments)
     return comments.map(comment => (
-        <div ey={index}>
-            <CommentTemplet k data = {comment} />
+      
+        <div key={index}>
+          {/* {console.log(comment)} */}
+            <CommentTemplet  data = {comment} />
             <div className="ml-5 border-l-4">
             <CommentList comments = {comment.replies}></CommentList>
             </div>

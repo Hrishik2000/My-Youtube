@@ -20,7 +20,7 @@ const VideoContainer = () => {
     const json =  await data.json();
     //console.log(json);
     setVideos(json.items);
-    console.log(videos);
+    //console.log(videos);
 
 
   } 

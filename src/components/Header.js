@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setToggleMenue } from "./utils/appSlice";
-import { YOUTUBE_AUTO_SUGGESTIONS_API } from "../constants";
+import { YOUTUBE_AUTO_SUGGESTIONS_API, YOUTUBE_VIDEO_BY_QUERY } from "../constants";
 import {cacheResults} from "./utils/searchSlice";
+
 
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
+
   //console.log(searchQuery);
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -84,6 +86,9 @@ const Header = () => {
     
   };
 
+
+  
+
   // Attach scroll event listener to document to hide suggestions on scroll
   useEffect(() => {
     const scrollHandler = () => {
@@ -114,7 +119,11 @@ const Header = () => {
           ></img>
         </a>
       </div>
-      <div className="col-span-10 text-center">
+      <form className="col-span-10 text-center" onSubmit={
+        (e)=>{
+            e.preventDefault()
+        }}>
+        
         <input
           className="w-1/2 border border-gray-500 p-2 rounded-l-full "
           type="text"
@@ -127,7 +136,7 @@ const Header = () => {
         <button className="border border-gray-500 p-2 rounded-r-full">
           search
         </button>
-      </div>
+      </form>
 
       {showSuggestions && (
         <div className="fixed top-16 left-1/3 w-[35.5rem] bg-white rounded-xl shadow-lg">
