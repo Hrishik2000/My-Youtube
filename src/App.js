@@ -5,7 +5,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import { RouterProvider } from 'react-router-dom';
 import Watch from './components/Watch';
 import MainContainer from './components/MainContainer';
-
+import {SelectedQueryProvider}  from './components/utils/selectedQueryContext';
 const appRouter=  createBrowserRouter([{
   path: '/',
   element: <Body/>,
@@ -25,8 +25,10 @@ const appRouter=  createBrowserRouter([{
 function App() {
   return (
     <div className="App">
+      <SelectedQueryProvider>
     <Header/>
     <RouterProvider router={appRouter}></RouterProvider>
+    </SelectedQueryProvider>
     </div>
   );
 }

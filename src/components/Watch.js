@@ -44,7 +44,7 @@ const Watch = () => {
 
   return (
     <div className="m-2">
-      <div className="flex ">
+      <div className="flex">
         <iframe
           width="1050"
           height="500"

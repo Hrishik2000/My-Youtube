@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setToggleMenue } from "./utils/appSlice";
-import {
-  YOUTUBE_AUTO_SUGGESTIONS_API,
-  YOUTUBE_VIDEO_BY_QUERY,
-} from "../constants";
+import {YOUTUBE_AUTO_SUGGESTIONS_API} from "../constants";
 import { cacheResults } from "./utils/searchSlice";
+import SelectedQueryContext from "./utils/selectedQueryContext";
+import { useContext } from "react";
 
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedQuery, setSelectedQuery] = useState("");
-  //console.log(searchQuery);
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+;
+const { query, setQuery } = useContext(SelectedQueryContext);
 
   const distatch = useDispatch();
 
@@ -67,8 +66,9 @@ const Header = () => {
 
   //getSuggestion Debounsing used for 200ms;
   const getSuggestion = async () => {
+    
     try {
-      const data = await fetch(YOUTUBE_AUTO_SUGGESTIONS_API + selectedQuery);
+      const data = await fetch(YOUTUBE_AUTO_SUGGESTIONS_API + searchQuery);
       const json = await data.json();
       //console.log(json[1]);
       setSuggestions(json[1]);
@@ -84,21 +84,7 @@ const Header = () => {
     }
   };
 
-  const searchByQuery = async () => {
-    const APIwithQuery = YOUTUBE_VIDEO_BY_QUERY.replace("{}", searchQuery);
-    try {
-      const data = await fetch(APIwithQuery);
-      const json = await data.json();
-      console.log(json);
-      
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  useEffect(()=>{
-    searchByQuery()
-  },[selectedQuery])
+ 
 
   // Attach scroll event listener to document to hide suggestions on scroll
   useEffect(() => {
@@ -134,7 +120,7 @@ const Header = () => {
         className="col-span-10 text-center"
         onSubmit={(e) => {
           e.preventDefault();
-          setSelectedQuery(searchQuery);
+          setQuery({ query : searchQuery});
         }}
       >
         {/* {console.log(SelectedQuery)} */}
@@ -150,7 +136,8 @@ const Header = () => {
         <button
           className="border border-gray-500 p-2 rounded-r-full"
           onClick={() => {
-            setSelectedQuery(searchQuery);
+            setQuery({ query : searchQuery});
+            console.log(query)
           }}
         >
           search
@@ -173,9 +160,12 @@ const Header = () => {
           </ul>
         </div>
       )}
-      <div className="col-span-1 ">
+      <div className="col-span-1 flex justify-center items-baseline  ">
+      <svg xmlns="http://www.w3.org/2000/svg" height="24" className="mx-2 " viewBox="0 0 24 24" width="24" focusable="false"><path d="M14 13h-3v3H9v-3H6v-2h3V8h2v3h3v2zm3-7H3v12h14v-6.39l4 1.83V8.56l-4 1.83V6m1-1v3.83L22 7v8l-4-1.83V19H2V5h16z"></path></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" className="mx-2" height="24" viewBox="0 0 24 24" width="24" focusable="false" ><path d="M10 20h4c0 1.1-.9 2-2 2s-2-.9-2-2zm10-2.65V19H4v-1.65l2-1.88v-5.15C6 7.4 7.56 5.1 10 4.34v-.38c0-1.42 1.49-2.5 2.99-1.76.65.32 1.01 1.03 1.01 1.76v.39c2.44.75 4 3.06 4 5.98v5.15l2 1.87zm-1 .42-2-1.88v-5.47c0-2.47-1.19-4.36-3.13-5.1-1.26-.53-2.64-.5-3.84.03C8.15 6.11 7 7.99 7 10.42v5.47l-2 1.88V18h14v-.23z"></path></svg>
+     
         <img
-          className="h-8"
+          className="h-8 "
           alt="profile"
           src="https://static.thenounproject.com/png/854888-200.png"
         ></img>

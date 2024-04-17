@@ -5,7 +5,7 @@ import { setMessages } from './utils/chatSlice'
 import { generateRandomName,generateRandomText } from './utils/helper'
 
 const ChatContainer = () => {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
     const liveChatData = useSelector(store=> store.chat.messages)
     //console.log(liveChatData)
     useEffect(()=>{
